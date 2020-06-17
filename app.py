@@ -1,7 +1,7 @@
 from flask import Flask,render_template,request, redirect, make_response, url_for
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import  Column, Integer, String, MetaData, DateTime, func
+from sqlalchemy import  Column, Integer, String, MetaData, DateTime,func
 from sqlalchemy.sql import text
 app= Flask(__name__)
 
@@ -26,9 +26,9 @@ class logins_data (db.Model):
     id= db.Column(db.Integer, primary_key = True )
     Username= db.Column(db.String, nullable=False, unique= True) 
     Password= db.Column( db.String, nullable=False)
-    BlockName= db.Column( db.String, nullable=False, unique= True)
+    BlockName= db.Column( db.String, nullable=False)
     AccessType= db.Column(db.String, nullable=False)
-    DateTime= db.Column(db.DateTime, default=datetime.utcnow)
+    DateTime= db.Column(db.DateTime, nullable=False)
 
     def __init__ (self, Username, Password, BlockName, AccessType, DateTime):
         self.Username= Username
@@ -50,9 +50,9 @@ class logs_data(db.Model):
     Material= db.Column(db.String, nullable=False)
     Quantity= db.Column(db.Integer, nullable=False)
     Author= db.Column(db.String, nullable= False)
-    DateTime= db.Column(db.DateTime, default= datetime.utcnow)
+    DateTime= db.Column(db.DateTime, nullable=False)
 
-    def __init__(self,Blockname, Contactor, PhoneNo, Scheme, Place, NameOfWork, Material, Quantity, Author, DateTime):
+    def __init__(self,BlockName, Contactor, PhoneNo, Scheme, Place, NameOfWork, Material, Quantity, Author, DateTime):
         self.BlockName= BlockName
         self.Contactor= Contactor
         self.PhoneNo= PhoneNo
@@ -79,7 +79,7 @@ class returns_data(db.Model):
     Author= db.Column(db.String, nullable= False)
     DateTime= db.Column(db.DateTime, default= datetime.utcnow)
 
-    def __init__(self,Blockname, Contactor, PhoneNo, Scheme, Place, NameOfWork, Material, Quantity, Author, DateTime):
+    def __init__(self,BlockName, Contactor, PhoneNo, Scheme, Place, NameOfWork, Material, Quantity, Author, DateTime):
         self.BlockName= BlockName
         self.Contactor= Contactor
         self.PhoneNo= PhoneNo
@@ -103,11 +103,11 @@ class restock_data (db.Model):
     Material= db.Column(db.String, nullable=False)
     Quantity= db.Column(db.Integer, nullable=False)
     Author= db.Column(db.String, nullable= False)
-    DateTime= db.Column(db.DateTime, default= datetime.utcnow)
+    DateTime= db.Column(db.DateTime, nullable=False)
     
-    def __init__(self,Blockname, SupplierName, InvoiceNo, Scheme, VehicleNo, Material, Quantity, Author, DateTime):
+    def __init__(self, BlockName, SupplierName, InvoiceNo, Scheme, VehicleNo, Material, Quantity, Author, DateTime):
         self.BlockName= BlockName
-        self.Contactor= Contactor
+        self.SupplierName=SupplierName
         self.InvoiceNo= InvoiceNo
         self.VehicleNo= VehicleNo
         self.Scheme = Scheme
@@ -126,9 +126,9 @@ class transfer_data (db.Model):
     Material= db.Column(db.String, nullable=False)
     Quantity= db.Column(db.Integer, nullable=False)
     Author= db.Column(db.String, nullable= False)
-    DateTime= db.Column(db.DateTime, default= datetime.utcnow)
+    DateTime= db.Column(db.DateTime, nullable=False)
     
-    def __init__(self,Blockname, FromScheme, ToScheme, Material, Quantity, Author, DateTime):
+    def __init__(self,BlockName, FromScheme, ToScheme, Material, Quantity, Author, DateTime):
         self.BlockName= BlockName
         self.FromScheme= FromScheme 
         self.ToScheme = ToScheme
@@ -142,13 +142,14 @@ class cement_data (db.Model):
     __tablename__ = 'cement_data'
     id= db.Column(db.Integer, primary_key= True)
     Scheme= db.Column(db.String, nullable= False)
-    BlockName= db.Column(db.String, nullable= False, default=0)
+    BlockName= db.Column(db.String, nullable= False)
     Cement= db.Column(db.Integer,  default=0)
-    DateTime= db.Column(db.DateTime, default= datetime.utcnow)
+    DateTime= db.Column(db.DateTime, nullable=False)
     
-    def __init__(self,Blockname, Scheme, Cement, DateTime):
-        self.BlockName= BlockName
+    def __init__(self, Scheme, BlockName, Cement, DateTime):
+        
         self.Scheme= Scheme 
+        self.BlockName= BlockName
         self.Cement= Cement
         self.DateTime = DateTime
 
@@ -157,15 +158,15 @@ class steel_data (db.Model):
     __tablename__ = 'steel_data'
     id= db.Column(db.Integer, primary_key= True)
     Scheme= db.Column(db.String, nullable= False)
-    BlockName= db.Column(db.String, nullable= False, default=0)
+    BlockName= db.Column(db.String, nullable= False)
     Steel_8mm= db.Column(db.Integer,  default=0)
     Steel_10mm= db.Column(db.Integer,  default=0)
     Steel_12mm= db.Column(db.Integer,  default=0)
     Steel_16mm= db.Column(db.Integer,  default=0)
     Steel_20mm= db.Column(db.Integer,  default=0)
-    DateTime= db.Column(db.DateTime, default= datetime.utcnow)
+    DateTime= db.Column(db.DateTime, nullable=False)
     
-    def __init__(self,Blockname, Scheme, Steel_8mm, Steel_10mm,Steel_12mm,Steel_16mm,Steel_20mm, DateTime):
+    def __init__(self,BlockName, Scheme, Steel_8mm, Steel_10mm,Steel_12mm,Steel_16mm,Steel_20mm, DateTime):
         self.BlockName= BlockName
         self.Scheme= Scheme 
         self.Steel_8mm= Steel_8mm
@@ -180,12 +181,12 @@ class bitumen_data (db.Model):
     __tablename__ = 'bitumen_data'
     id= db.Column(db.Integer, primary_key= True)
     Scheme= db.Column(db.String, nullable= False)
-    BlockName= db.Column(db.String, nullable= False, default=0)
+    BlockName= db.Column(db.String, nullable= False)
     Bitumen= db.Column(db.Integer,  default=0)
     Emulsion= db.Column(db.Integer,  default=0)
-    DateTime= db.Column(db.DateTime, default= datetime.utcnow)
+    DateTime= db.Column(db.DateTime, nullable=False)
     
-    def __init__(self,Blockname, Scheme, Bitumen, Emulsion, DateTime):
+    def __init__(self,BlockName, Scheme, Bitumen, Emulsion, DateTime):
         self.BlockName= BlockName
         self.Scheme= Scheme 
         self.Bitumen= Bitumen
@@ -198,15 +199,15 @@ class other_data (db.Model):
     __tablename__ = 'other_data'
     id= db.Column(db.Integer, primary_key= True)
     Scheme= db.Column(db.String, nullable= False)
-    BlockName= db.Column(db.String, nullable= False, default=0)
+    BlockName= db.Column(db.String, nullable= False)
     Door= db.Column(db.Integer,  default=0)
     Window_1= db.Column(db.Integer,  default=0)
     Window_2= db.Column(db.Integer,  default=0)
     Toilet_Door= db.Column(db.Integer,  default=0)
     LogoTiles= db.Column(db.Integer,  default=0)
-    DateTime= db.Column(db.DateTime, default= datetime.utcnow)
+    DateTime= db.Column(db.DateTime, nullable=False)
     
-    def __init__(self,Blockname, Scheme, Door, Window_1, Window_2, Toilet_Door, LogoTiles, DateTime):
+    def __init__(self,BlockName, Scheme, Door, Window_1, Window_2, Toilet_Door, LogoTiles, DateTime):
         self.BlockName= BlockName
         self.Scheme= Scheme 
         self.Door= Door
@@ -471,7 +472,7 @@ def update():
         quantity= request.cookies.get('Quantity_update')
         material = request.cookies.get('Material_update')
         
-        new_log= logs_data( BlockName= blockname, Contactor = contactorname, PhoneNo= phoneno, Scheme= scheme, Place= place, NameOfWork= nameofwork, Material= material, Quantity= quantity,Author= author)
+        new_log= logs_data( BlockName= blockname, Contactor = contactorname, PhoneNo= phoneno, Scheme= scheme, Place= place, NameOfWork= nameofwork, Material= material, Quantity= quantity,Author= author, DateTime=datetime.utcnow())
         db.session.add(new_log)
         db.session.commit()
 
@@ -589,7 +590,7 @@ def restock():
             scheme= request.form['scheme']
             material=  request.form['material']
             quantity=  request.form['quantity']
-            blockname=request.cookies.get('BlockId')
+            blockname= request.cookies.get('BlockId')
             
             resp=make_response(redirect('/update_restock'))
             resp.set_cookie('Name_update',suppliername)
@@ -609,7 +610,7 @@ def restock():
                         except:
                             return render_template('restock.html',error='update_error', accessid=accessid) 
                 else:
-                    new_stock= cement_data(BlockName= blockname, Scheme=scheme, Cement= quantity)
+                    new_stock= cement_data( Scheme=scheme, BlockName=blockname,Cement=quantity, DateTime=datetime.utcnow() )
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -618,7 +619,7 @@ def restock():
                         return render_template('restock.html',error='create_error', accessid=accessid)
 
             elif material== 'steel_8mm':
-                data= steel_data.query.filter(steel_data.BlockName.like(blockname)).filter(steel_data.Scheme.like(scheme)).first()
+                data= steel_data.query.filter(steel_data.BlockName.like(block_name)).filter(steel_data.Scheme.like(scheme)).first()
                 
                 if data:
                         data.Steel_8mm= int(data.Steel_8mm)+ int(quantity)
@@ -628,7 +629,7 @@ def restock():
                         except:
                             return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= steel_data(BlockName= blockname, Scheme=scheme, Steel_8mm= quantity)
+                    new_stock= steel_data(BlockName= blockname, Scheme=scheme, Steel_8mm= quantity,DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -647,7 +648,7 @@ def restock():
                         except:
                             return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= steel_data(BlockName= blockname, Scheme=scheme, Steel_10mm= quantity)
+                    new_stock= steel_data(BlockName= blockname, Scheme=scheme, Steel_10mm= quantity, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -666,7 +667,7 @@ def restock():
                         except:
                             return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= steel_data(BlockName= blockname, Scheme=scheme, Steel_12mm= quantity)
+                    new_stock= steel_data(BlockName= blockname, Scheme=scheme, Steel_12mm= quantity, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()
@@ -685,7 +686,7 @@ def restock():
                         except:
                             return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= steel_data(BlockName= blockname, Scheme=scheme, Steel_16mm= quantity)
+                    new_stock= steel_data(BlockName= blockname, Scheme=scheme, Steel_16mm= quantity, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -704,7 +705,7 @@ def restock():
                         except:
                             return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= steel_data(BlockName= blockname, Scheme=scheme, Steel_20mm= quantity)
+                    new_stock= steel_data(BlockName= blockname, Scheme=scheme, Steel_20mm= quantity, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -723,7 +724,7 @@ def restock():
                         except:
                             return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= bitumen_data(BlockName= blockname, Scheme=scheme, Bitumen= quantity)
+                    new_stock= bitumen_data(BlockName= blockname, Scheme=scheme, Bitumen= quantity, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -742,7 +743,7 @@ def restock():
                         except:
                             return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= bitumen_data(BlockName= blockname, Scheme=scheme, Emulsion= quantity)
+                    new_stock= bitumen_data(BlockName= blockname, Scheme=scheme, Emulsion= quantity, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -761,7 +762,7 @@ def restock():
                         except:
                             return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= other_data(BlockName= blockname, Scheme=scheme, Window_1 = quantity)
+                    new_stock= other_data(BlockName= blockname, Scheme=scheme, Window_1 = quantity, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -780,7 +781,7 @@ def restock():
                         except:
                            return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= other_data(BlockName= blockname, Scheme=scheme, Window_2 = quantity)
+                    new_stock= other_data(BlockName= blockname, Scheme=scheme, Window_2 = quantity, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -799,7 +800,7 @@ def restock():
                         except:
                             return render_template('restock.html',error='update_error', accessid=accessid) 
                 else:
-                    new_stock= other_data(BlockName= blockname, Scheme=scheme, Door= quantity)
+                    new_stock= other_data(BlockName= blockname, Scheme=scheme, Door= quantity, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -818,7 +819,7 @@ def restock():
                         except:
                            return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= other_data(BlockName= blockname, Scheme=scheme, Toilet_Door= quantity)
+                    new_stock= other_data(BlockName= blockname, Scheme=scheme, Toilet_Door= quantity, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -836,7 +837,7 @@ def restock():
                         except:
                            return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= other_data(BlockName= blockname, Scheme=scheme, LogoTiles= quantity)
+                    new_stock= other_data(BlockName= blockname, Scheme=scheme, LogoTiles= quantity, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -864,7 +865,7 @@ def update_restock():
         vehicleno= request.cookies.get('Vehicleno_update')
         author= request.cookies.get('UserId')
 
-        new_restock= restock_data( BlockName= blockname, SupplierName= suppliername, InvoiceNo= invoiceno, VehicleNo=vehicleno, Scheme=scheme, Material=material, Quantity=quantity, Author=author)
+        new_restock= restock_data( BlockName= blockname, SupplierName= suppliername, InvoiceNo= invoiceno, VehicleNo=vehicleno, Scheme=scheme, Material=material, Quantity=quantity, Author=author, DateTime=datetime.utcnow())
         db.session.add(new_restock)
         db.session.commit()
 
@@ -1185,7 +1186,7 @@ def update_returns():
         quantity= request.cookies.get('Quantity_update')
         material = request.cookies.get('Material_update')
 
-        new_returns= returns_data(BlockName=blockname, Contactor = contactorname, PhoneNo= phoneno, Scheme= scheme, Place= place, NameOfWork= nameofwork, Material= material, Quantity= quantity, Author= author)
+        new_returns= returns_data(BlockName=blockname, Contactor = contactorname, PhoneNo= phoneno, Scheme= scheme, Place= place, NameOfWork= nameofwork, Material= material, Quantity= quantity, Author= author, DateTime=datetime.utcnow())
         db.session.add(new_returns)
         db.session.commit()
 
@@ -1330,7 +1331,7 @@ def transfer():
                     else:
                         if (int(fromdata.Cement)-int( quantity)) >=0:
                             fromdata.Cement= int(fromdata.Cement) - int(quantity)
-                            to_data_update= cement_data(BlockName= blockname, Scheme=toscheme, Cement= quantity)
+                            to_data_update= cement_data(BlockName= blockname, Scheme=toscheme, Cement= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()
@@ -1360,7 +1361,7 @@ def transfer():
                     else:
                         if (int(fromdata.Steel_8mm)-int( quantity)) >=0:
                             fromdata.Steel_8mm= int(fromdata.Steel_8mm) - int(quantity)
-                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme, Steel_8mm= quantity)
+                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme, Steel_8mm= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1390,7 +1391,7 @@ def transfer():
                     else:
                         if (int(fromdata.Steel_10mm)-int( quantity)) >=0:
                             fromdata.Steel_10mm= int(fromdata.Steel_10mm) - int(quantity)
-                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme, Steel_10mm= quantity)
+                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme, Steel_10mm= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1420,7 +1421,7 @@ def transfer():
                     else:
                         if (int(fromdata.Steel_12mm)-int( quantity)) >=0:
                             fromdata.Steel_12mm= int(fromdata.Steel_12mm) - int(quantity)
-                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme, Steel_12mm= quantity)
+                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme, Steel_12mm= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1450,7 +1451,7 @@ def transfer():
                     else:
                         if (int(fromdata.Steel_12mm)-int( quantity)) >=0:
                             fromdata.Steel_12mm= int(fromdata.Steel_12mm) - int(quantity)
-                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme, Steel_12mm= quantity)
+                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme, Steel_12mm= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1480,7 +1481,7 @@ def transfer():
                     else:
                         if (int(fromdata.Steel_16mm)-int( quantity)) >=0:
                             fromdata.Steel_16mm= int(fromdata.Steel_16mm) - int(quantity)
-                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme, Steel_16mm= quantity)
+                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme, Steel_16mm= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1510,7 +1511,7 @@ def transfer():
                     else:
                         if (int(fromdata.Steel_20mm)-int( quantity)) >=0:
                             fromdata.Steel_20mm= int(fromdata.Steel_20mm) - int(quantity)
-                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme, Steel_20mm= quantity)
+                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme, Steel_20mm= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1540,7 +1541,7 @@ def transfer():
                     else:
                         if (int(fromdata.Bitumen)-int( quantity)) >=0:
                             fromdata.Bitumen= int(fromdata.Bitumen) - int(quantity)
-                            to_data_update= bitumen_data(BlockName= blockname, Scheme=toscheme, Bitumen= quantity)
+                            to_data_update= bitumen_data(BlockName= blockname, Scheme=toscheme, Bitumen= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1570,7 +1571,7 @@ def transfer():
                     else:
                         if (int(fromdata.Emulsion)-int( quantity)) >=0:
                             fromdata.Emulsion= int(fromdata.Emulsion) - int(quantity)
-                            to_data_update= bitumen_data(BlockName= blockname, Scheme=toscheme, Emulsion= quantity)
+                            to_data_update= bitumen_data(BlockName= blockname, Scheme=toscheme, Emulsion= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1600,7 +1601,7 @@ def transfer():
                     else:
                         if (int(fromdata.Window_1)-int( quantity)) >=0:
                             fromdata.Window_1= int(fromdata.Window_1) - int(quantity)
-                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme, Window_1= quantity)
+                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme, Window_1= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                              
@@ -1630,7 +1631,7 @@ def transfer():
                     else:
                         if (int(fromdata.Window_2)-int( quantity)) >=0:
                             fromdata.Window_2= int(fromdata.Window_2) - int(quantity)
-                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme, Window_2= quantity)
+                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme, Window_2= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1660,7 +1661,7 @@ def transfer():
                     else:
                         if (int(fromdata.Door)-int( quantity)) >=0:
                             fromdata.Door= int(fromdata.Door) - int(quantity)
-                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme, Door= quantity)
+                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme, Door= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1690,7 +1691,7 @@ def transfer():
                     else:
                         if (int(fromdata.Toilet_Door)-int( quantity)) >=0:
                             fromdata.Toilet_Door= int(fromdata.Toilet_Door) - int(quantity)
-                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme, Toilet_Door= quantity)
+                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme, Toilet_Door= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1719,7 +1720,7 @@ def transfer():
                     else:
                         if (int(fromdata.LogoTiles)-int( quantity)) >=0:
                             fromdata.LogoTiles= int(fromdata.LogoTiles) - int(quantity)
-                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme, LogoTiles= quantity)
+                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme, LogoTiles= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1749,7 +1750,7 @@ def update_transfer():
         quantity= request.cookies.get('Quantity_update')
         author= request.cookies.get('UserId')
 
-        new_transfer= transfer_data( BlockName= blockname, FromScheme= fromscheme, ToScheme= toscheme, Material= material, Quantity= quantity, Author=author)
+        new_transfer= transfer_data( BlockName= blockname, FromScheme= fromscheme, ToScheme= toscheme, Material= material, Quantity= quantity, Author=author, DateTime=datetime.utcnow())
         db.session.add(new_transfer)
         db.session.commit()
 
@@ -2494,14 +2495,13 @@ def register():
             block_name= request.form['block_name']
             access_type= request.form['access_type']
             
-            new_login=logins_data( Username= username, Password= password, BlockName= block_name, AccessType= access_type )
-
-            try:
-                db.session.add(new_login)
-                db.session.commit()
-                return redirect('/home')
-            except:
-                return"There was a server isssue"
+            new_login=logins_data( Username= username, Password= password, BlockName= block_name, AccessType= access_type , DateTime= datetime.utcnow())
+            
+            db.session.add(new_login)
+            db.session.commit()
+            return redirect('/home')
+           
+                
         else:
             return render_template('register.html', accessid=accessid)
     else:
