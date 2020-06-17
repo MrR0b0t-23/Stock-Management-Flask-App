@@ -7,7 +7,8 @@ app= Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///project-1.db'
 db= SQLAlchemy(app)
- 
+def getApp():    
+ return app 
 #database
 
 class logins_data (db.Model): 
