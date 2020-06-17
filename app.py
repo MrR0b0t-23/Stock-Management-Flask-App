@@ -5,7 +5,7 @@ from sqlalchemy import  Column, Integer, String, MetaData, DateTime, func
 from sqlalchemy.sql import text
 app= Flask(__name__)
 
-app.config['DATABASE_URL']='sqlite:///project.db'
+app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///project.db'
 db= SQLAlchemy(app)
 
 #database
