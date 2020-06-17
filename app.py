@@ -1,7 +1,7 @@
 from flask import Flask,render_template,request, redirect, make_response, url_for
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import  Column, Integer, String, MetaData, DateTime
+from sqlalchemy import  Column, Integer, String, MetaData, DateTime, func
 from sqlalchemy.sql import text
 app= Flask(__name__)
 
