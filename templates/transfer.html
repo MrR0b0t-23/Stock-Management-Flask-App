@@ -1,0 +1,343 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Transfer</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="{{ url_for('static',filename='transfer/images/icons/log.png')}}"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='transfer/vendor/bootstrap/css/bootstrap.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='transfer/fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='transfer/fonts/Linearicons-Free-v1.0.0/icon-font.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='transfer/vendor/animate/animate.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='transfer/vendor/css-hamburgers/hamburgers.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='transfer/vendor/animsition/css/animsition.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='transfer/vendor/select2/select2.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='transfer/vendor/daterangepicker/daterangepicker.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='transfer/css/util.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='transfer/css/main.css')}}">
+<!--===============================================================================================-->
+</head>
+<body>
+
+
+	<div class="container-contact100">
+		{%if error == 'low_stock'%}
+		<div class="alert alert-warning alert-dismissible fade show" role="alert">
+			<strong>warning !! </strong> Not enough {{material_name}} in inventory under {{scheme_name}} scheme.
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		{%endif%}
+		{%if error== 'no_stock'%}
+		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+			<strong>Alert !! </strong> No {{material_name}} found under {{scheme_name}} scheme in inventory.
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		{%endif%}
+		{%if error== 'update_error'%}
+		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+			<strong>Alert !! </strong>  Error while updating data Try again.
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		{%endif%}
+		<div class=" wrap-menu">		
+			<div id="mySidebar" class="sidebar">
+				<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">x</a>
+				<div class="nav-item dropdown bg-white font-size-50">
+					<a href="/home">Home</a>
+					{% if accessid == "Admin" or accessid=="SuperAdmin" or accessid=="User"%}
+					<a class="nav-link dropdown-toggle " data-toggle="dropdown" href="#">Stock Management</a>
+					<div class="dropdown-menu bg-white dropright">
+						<h6 class="dropdown-header">Stock Management</h6>
+						<a class="dropdown-item" href="/restock">Restock </a>
+						<a class="dropdown-item" href="/logs">Log Stock</a>
+						<a class="dropdown-item" href="/transfer">Transfer Stock</a>
+						<a class="dropdown-item" href="/returns">Return Stock</a>	
+					</div>
+					{%endif%}	
+				</div>
+				{% if accessid== "Guest"%}
+				<a  href="/view_logs">Log Ledger</a>
+				{% endif %}
+				{% if accessid == "Admin" or accessid=="SuperAdmin" or accessid=="User"%}
+				<div class="nav-item dropdown bg-white font-size-50">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Ledger Management</a>
+					<div class="dropdown-menu bg-white">
+						<h6 class="dropdown-header">Ledger Management</h6>
+						<a class="dropdown-item" href="/view_restock">Restock Ledger</a>
+						<a class="dropdown-item" href="/view_logs">Log Ledger</a>
+						<a class="dropdown-item" href="/view_transfer">Transfer Ledger</a>
+						<a class="dropdown-item" href="/view_return">Return Ledger</a>
+					</div>	
+				{%endif%}
+				{% if accessid == "Admin" or accessid=="SuperAdmin"%}
+				<div class="nav-item dropdown bg-white ">
+					<a class="nav-link dropdown-toggle " data-toggle="dropdown" href="#">User Management</a>
+					<div class="dropdown-menu bg-white">
+						<h6 class="dropdown-header">User Management</h6>
+						<a class="dropdown-item h6 " href="/register">Add User</a>
+						<a class="dropdown-item " href="/delete">Remove User</a>
+					</div>
+				</div>
+				{% endif %}
+				{% if accessid == "Admin" or accessid=="SuperAdmin" or accessid=="User"%}
+				<div class="nav-item dropdown bg-white font-size-50">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Settings</a>
+					<div class="dropdown-menu bg-white">
+						<h6 class="dropdown-header">Settings</h6>
+						{%if accessid == "Admin" or accessid== "SuperAdmin"%}
+						<a class="dropdown-item" href="/edit">Edit Log Ledger</a>
+						{%endif%}
+						<a class="dropdown-item" href="/passwd_update">Change Password </a>
+					</div>	
+				</div>
+				{%endif%}
+				<a href="/logout">Logout</a>
+			</div>
+		</div>
+		<div id="main">
+		<button class="openbtn" onclick="openNav()">☰ Menu</button>  
+		</div>
+
+		<script>
+		function openNav() {
+		document.getElementById("mySidebar").style.width = "250px";
+		document.getElementById("main").style.marginLeft = "250px";
+		}
+
+		function closeNav() {
+		document.getElementById("mySidebar").style.width = "0";
+		document.getElementById("main").style.marginLeft= "0";
+		}
+		</script>
+		</div> 
+		<div class="wrap-contact100">
+			<form class="contact100-form validate-form" method ='POST'>
+				<span class="contact100-form-title">
+					Transfer Form
+				</span>
+				<div class="wrap-input100 input100-select">
+					<span class="label-input100">Material</span>
+					<div>
+						<select class="selection-2" name="material" id= "material">
+							<option value=""> Select Material</option>
+							<option value="cement">Cement</option>
+							<option value= "steel_8mm">Steel 8 MM</option>
+							<option value= "steel_10mm">Steel 10 MM</option>
+							<option value= "steel_12mm">Steel 12 MM</option>
+							<option value= "steel_16mm">Steel 16 MM</option>
+							<option value= "steel_20mm">Steel 20 MM</option>
+							<option value= "bitumen">Bitumen</option>
+							<option value= "emulsion">Emulsion</option>
+							<option value= "window_1">Window 1</option>
+							<option value= "window_2">Window 2</option>
+							<option value= "door">Door</option>
+							<option value= "toilet_door">Toilet Door</option>
+							<option value= "logo_tile">Logo Tiles</option>
+						</select>
+					</div> 
+					<span class="focus-input100" ></span>
+				</div>
+				<div class="wrap-input100 input100-select">
+					<span class="label-input100">From Scheme</span>
+					<div>
+						<select class="selection-2" name="from_scheme" id= "from_scheme">
+						</select>
+					</div>
+					<span class="focus-input100" ></span>
+				</div>
+				<div class="wrap-input100 input100-select">
+					<span class="label-input100">To Scheme</span>
+					<div>
+						<select class="selection-2" name="to_scheme" id= "to_scheme">
+						</select>
+					</div>
+					<span class="focus-input100" ></span>
+				</div>
+				
+				<div class="wrap-input100 validate-input" data-validate="Quantity is required ">
+					<span class="label-input100">Quantity</span>
+					<input class="input100" type="text" name="Quantity" placeholder="Enter Quantity of material">
+					<span class="focus-input100" data-placeholder="&#xe80f;"></span>
+				</div>
+				<div class="container-contact100-form-btn">
+					<div class="wrap-contact100-form-btn">
+						<div class="contact100-form-bgbtn"></div>
+						<button class="contact100-form-btn">
+							<span>
+								Submit
+								<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+							</span>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+
+	<div id="dropDownSelect1"></div>
+
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='transfer/vendor/jquery/jquery-3.2.1.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='transfer/vendor/animsition/js/animsition.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='transfer/vendor/bootstrap/js/popper.js')}}"></script>
+	<script src="{{ url_for('static',filename='transfer/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='transfer/vendor/select2/select2.min.js')}}"></script>
+	<script>
+		$(".selection-2").select2({
+			minimumResultsForSearch: 30,
+			dropdownParent: $('#dropDownSelect1')
+		});
+	</script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='transfer/vendor/daterangepicker/moment.min.js')}}"></script>
+	<script src="{{ url_for('static',filename='transfer/vendor/daterangepicker/daterangepicker.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='transfer/vendor/countdowntime/countdowntime.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='transfer/js/main.js')}}"></script>
+
+<script src="{{ url_for('static',filename='Contactor/js/main.js')}}"></script>
+<script language="javascript" type="text/javascript">  
+$(document).ready(function(){
+
+//let's create arrays
+var cement = [
+	{display: "General Stock Cement", value: "General Stock Cement" }, 
+	{display: "MLA CD", value: "MLA CD" }, 
+	{display: "MP LAD", value: "MP LAD" },
+	{display: "AD Welfare", value: "AD Welfare" },
+	{display: "SFC", value: "SFC" },
+	{display: "NABARD", value: "NABARD" },
+	{display: "TNRRIS", value: "TNRRIS" },
+	{display: "PMGSY", value: "PMGSY" },
+	{display: "PMAY (G)", value: "PMAY (G)" },
+	{display: "Green House", value: "Green House" },
+	{display: "15th Finance Commission", value: "15th Finance Commission" },
+	{display: "MGNREGS", value: "MGNREGS" }];
+var steel = [
+	{display: "General Stock Steel", value: "General Stock Steel" }, 
+	{display: "MLA CD", value: "MLA CD" }, 
+	{display: "MP LAD", value: "MP LAD" },
+	{display: "AD Welfare", value: "AD Welfare" },
+	{display: "SFC", value: "SFC" },
+	{display: "NABARD", value: "NABARD" },
+	{display: "TNRRIS", value: "TNRRIS" },
+	{display: "PMGSY", value: "PMGSY" },
+	{display: "PMAY (G)", value: "PMAY (G)" },
+	{display: "Green House", value: "Green House" },
+	{display: "15th Finance Commission", value: "15th Finance Commission" },
+	{display: "MGNREGS", value: "MGNREGS" }];	
+var bitumen = [
+	{display: "General Stock Bitumen", value: "General Stock Bitumen" }, 
+	{display: "MLA CD", value: "MLA CD" }, 
+	{display: "MP LAD", value: "MP LAD" },
+	{display: "SFC", value: "SFC" },
+	{display: "NABARD", value: "NABARD" },
+	{display: "TNRRIS", value: "TNRRIS" },
+	{display: "PMGSY", value: "PMGSY" },
+	{display: "15th Finance Commission", value: "15th Finance Commission" },
+	{display: "Renewal Work", value: "Renewal Work" }];
+
+var others = [
+	{display: "General Stock ", value: "General Stock " }, 
+	{display: "MLA CD", value: "MLA CD" }, 
+	{display: "MP LAD", value: "MP LAD" },
+	{display: "PMGSY", value: "PMGSY" },
+	{display: "Green House", value: "Green House" },
+	{display: "MGNREGS", value: "MGNREGS" },
+	{display: "SBM", value: "SBM" },
+	{display: "Others", value: "Others" }];
+	
+//If parent option is changed
+$("#material").change(function() {
+		var parent = $(this).val(); //get option value from parent 
+		
+		switch(parent){ //using switch compare selected option and populate child
+			  case "cement":
+			 	list(cement);
+				break;
+			  case "steel_8mm":
+			 	list(steel);
+				break;		
+			case "steel_10mm":
+			 	list(steel);
+				break;
+			case "steel_12mm":
+			 	list(steel);
+				break;
+			case "steel_16mm":
+			 	list(steel);
+				break;	
+			case "steel_20mm":
+			 	list(steel);
+				break;	
+			case "bitumen":
+			 	list(bitumen);
+				break;	
+			case "emulsion":
+			 	list(bitumen);
+				break;
+			case "door":
+			 	list(others);
+				break;
+			case "toilet_door":
+			 	list(others);
+				break;
+			case "window_1":
+			 	list(others);
+				break;
+			case "window_2":
+			 	list(others);
+				break
+			case "logo_tile":
+			 	list(others);
+				break;
+			default: //default child option is blank
+				$("#scheme").html("cement");	 
+				break;
+		   }
+});
+
+//function to populate child select box
+function list(array_list)
+{
+	$("#from_scheme").html("cement"); //reset child options
+	$(array_list).each(function (i) { //populate child options 
+		$("#from_scheme").append("<option value=\""+array_list[i].value+"\">"+array_list[i].display+"</option>");
+	});
+
+	$("#to_scheme").html("cement"); //reset child options
+	$(array_list).each(function (i) { //populate child options 
+		$("#to_scheme").append("<option value=\""+array_list[i].value+"\">"+array_list[i].display+"</option>");
+	});
+}
+
+});
+</script>
+	
+
+
+</body>
+</html>

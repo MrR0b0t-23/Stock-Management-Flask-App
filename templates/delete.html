@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Register</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="{{ url_for('static',filename='Register/images/icons/log.png')}}"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='Register/vendor/bootstrap/css/bootstrap.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='Register/fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='Register/fonts/Linearicons-Free-v1.0.0/icon-font.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='Register/vendor/animate/animate.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='Register/vendor/css-hamburgers/hamburgers.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='Register/vendor/animsition/css/animsition.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='Register/vendor/select2/select2.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='Register/vendor/daterangepicker/daterangepicker.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='Register/css/util.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='Register/css/main.css')}}">
+<!--===============================================================================================-->
+</head>
+<body>
+	<div class="container-contact100">
+		{%if error== "invalid"%}
+		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+			<strong>Alert !! </strong> Invalid user credentials. 
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		{%endif%}
+		<div class=" wrap-menu">		
+			<div id="mySidebar" class="sidebar">
+				<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">x</a>
+				<div class="nav-item dropdown bg-white font-size-50">
+					<a href="/home">Home</a>
+					{% if accessid == "Admin" or accessid=="SuperAdmin" or accessid=="User"%}
+					<a class="nav-link dropdown-toggle " data-toggle="dropdown" href="#">Stock Management</a>
+					<div class="dropdown-menu bg-white dropright">
+						<h6 class="dropdown-header">Stock Management</h6>
+						<a class="dropdown-item" href="/restock">Restock </a>
+						<a class="dropdown-item" href="/logs">Log Stock</a>
+						<a class="dropdown-item" href="/transfer">Transfer Stock</a>
+						<a class="dropdown-item" href="/returns">Return Stock</a>	
+					</div>
+					{%endif%}	
+				</div>
+				{% if accessid== "Guest"%}
+				<a  href="/view_logs">Log Ledger</a>
+				{% endif %}
+				{% if accessid == "Admin" or accessid=="SuperAdmin" or accessid=="User"%}
+				<div class="nav-item dropdown bg-white font-size-50">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Ledger Management</a>
+					<div class="dropdown-menu bg-white">
+						<h6 class="dropdown-header">Ledger Management</h6>
+						<a class="dropdown-item" href="/view_restock">Restock Ledger</a>
+						<a class="dropdown-item" href="/view_logs">Log Ledger</a>
+						<a class="dropdown-item" href="/view_transfer">Transfer Ledger</a>
+						<a class="dropdown-item" href="/view_return">Return Ledger</a>
+					</div>	
+				{%endif%}
+				{% if accessid == "Admin" or accessid=="SuperAdmin"%}
+				<div class="nav-item dropdown bg-white ">
+					<a class="nav-link dropdown-toggle " data-toggle="dropdown" href="#">User Management</a>
+					<div class="dropdown-menu bg-white">
+						<h6 class="dropdown-header">User Management</h6>
+						<a class="dropdown-item h6 " href="/register">Add User</a>
+						<a class="dropdown-item " href="/delete">Remove User</a>
+					</div>
+				</div>
+				{% endif %}
+				{% if accessid == "Admin" or accessid=="SuperAdmin" or accessid=="User"%}
+				<div class="nav-item dropdown bg-white font-size-50">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Settings</a>
+					<div class="dropdown-menu bg-white">
+						<h6 class="dropdown-header">Settings</h6>
+						{%if accessid == "Admin" or accessid== "SuperAdmin"%}
+						<a class="dropdown-item" href="/edit">Edit Log Ledger</a>
+						{%endif%}
+						<a class="dropdown-item" href="/passwd_update">Change Password </a>
+					</div>	
+				</div>
+				{%endif%}
+				<a href="/logout">Logout</a>
+			</div>
+		</div>
+		<div id="main">
+		<button class="openbtn" onclick="openNav()">☰ Menu</button>  
+		</div>
+
+		<script>
+		function openNav() {
+		document.getElementById("mySidebar").style.width = "250px";
+		document.getElementById("main").style.marginLeft = "250px";
+		}
+
+		function closeNav() {
+		document.getElementById("mySidebar").style.width = "0";
+		document.getElementById("main").style.marginLeft= "0";
+		}
+		</script>
+		</div>  
+		<div class="wrap-contact100">
+			<form class="contact100-form validate-form"  method="POST">
+			
+				<span class="contact100-form-title">
+					Account deactivation Form
+				</span>
+
+				<div class="wrap-input100 validate-input" data-validate="Username is required">
+					<span class="label-input100"/>Username</span>
+					<input class="input100" type="text" name="username" placeholder="Enter Username" >
+					<span class="focus-input100" ></span>
+				</div>
+				<div class="wrap-input100 input100-select">
+					<span class="label-input100">Access Type</span>
+					<div>
+						<select class="selection-2" name="access_type">
+							<option value= "User">User</option>
+							{% if accessid== 'SuperAdmin'%}
+							<option value= "Admin">Admin</option>
+							{%endif%}
+						</select>
+					</div>
+					<span class="focus-input100" ></span>
+				</div>
+				<div class="container-contact100-form-btn">
+					<div class="wrap-contact100-form-btn">
+						<div class="contact100-form-bgbtn"></div>
+						<button class="contact100-form-btn">
+							<span>
+								Deactivate
+								<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+							</span>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+
+	<div id="dropDownSelect1"></div>
+
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='Register/vendor/jquery/jquery-3.2.1.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='Register/vendor/animsition/js/animsition.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='Register/vendor/bootstrap/js/popper.js')}}"></script>
+	<script src="{{ url_for('static',filename='Register/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='Register/vendor/select2/select2.min.js')}}"></script>
+	<script>
+		$(".selection-2").select2({
+			minimumResultsForSearch: 30,
+			dropdownParent: $('#dropDownSelect1')
+		});
+	</script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='Register/vendor/daterangepicker/moment.min.js')}}"></script>
+	<script src="{{ url_for('static',filename='Register/vendor/daterangepicker/daterangepicker.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='Register/vendor/countdowntime/countdowntime.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='Register/js/main.js')}}"></script>
+
+	
+</body>
+</html>

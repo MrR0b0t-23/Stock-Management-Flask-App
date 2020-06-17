@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Table</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="{{ url_for('static',filename='stock/images/icons/favicon.ico')}}"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stock/vendor/bootstrap/css/bootstrap.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stock/fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stock/vendor/animate/animate.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stock/vendor/select2/select2.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stock/vendor/perfect-scrollbar/perfect-scrollbar.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stock/css/util.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stock/css/main.css')}}">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+</head>
+<body>
+	
+	<div class="limiter">
+	
+		<div class="container-table100">
+		
+			<div class=" wrap-menu">		
+			<div id="mySidebar" class="sidebar">
+				<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">x</a>
+				<div class="nav-item dropdown bg-white font-size-50">
+					<a href="/home">Home</a>
+					{% if accessid == "Admin" or accessid=="SuperAdmin" or accessid=="User"%}
+					<a class="nav-link dropdown-toggle " data-toggle="dropdown" href="#">Stock Management</a>
+					<div class="dropdown-menu bg-white dropright">
+						<h6 class="dropdown-header">Stock Management</h6>
+						<a class="dropdown-item" href="/restock">Restock </a>
+						<a class="dropdown-item" href="/logs">Log Stock</a>
+						<a class="dropdown-item" href="/transfer">Transfer Stock</a>
+						<a class="dropdown-item" href="/returns">Return Stock</a>	
+					</div>
+					{%endif%}	
+				</div>
+				{% if accessid== "Guest"%}
+				<a  href="/view_logs">Log Ledger</a>
+				{% endif %}
+				{% if accessid == "Admin" or accessid=="SuperAdmin" or accessid=="User"%}
+				<div class="nav-item dropdown bg-white font-size-50">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Ledger Management</a>
+					<div class="dropdown-menu bg-white">
+						<h6 class="dropdown-header">Ledger Management</h6>
+						<a class="dropdown-item" href="/view_restock">Restock Ledger</a>
+						<a class="dropdown-item" href="/view_logs">Log Ledger</a>
+						<a class="dropdown-item" href="/view_transfer">Transfer Ledger</a>
+						<a class="dropdown-item" href="/view_return">Return Ledger</a>
+					</div>	
+				{%endif%}
+				{% if accessid == "Admin" or accessid=="SuperAdmin"%}
+				<div class="nav-item dropdown bg-white ">
+					<a class="nav-link dropdown-toggle " data-toggle="dropdown" href="#">User Management</a>
+					<div class="dropdown-menu bg-white">
+						<h6 class="dropdown-header">User Management</h6>
+						<a class="dropdown-item h6 " href="/register">Add User</a>
+						<a class="dropdown-item " href="/delete">Remove User</a>
+					</div>
+				</div>
+				{% endif %}
+				{% if accessid == "Admin" or accessid=="SuperAdmin" or accessid=="User"%}
+				<div class="nav-item dropdown bg-white font-size-50">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Settings</a>
+					<div class="dropdown-menu bg-white">
+						<h6 class="dropdown-header">Settings</h6>
+						{%if accessid == "Admin" or accessid== "SuperAdmin"%}
+						<a class="dropdown-item" href="/edit">Edit Log Ledger</a>
+						{%endif%}
+						<a class="dropdown-item" href="/passwd_update">Change Password </a>
+					</div>	
+				</div>
+				{%endif%}
+				<a href="/logout">Logout</a>
+			</div>
+		</div>
+			<span class= "wrap-form">
+			<input  class="in" id="myInput" type="text" placeholder="Search.."></span>
+				<script>
+				$(document).ready(function(){
+				$("#myInput").on("keyup", function() {
+					var value = $(this).val().toLowerCase();
+					$("#myTable tr").filter(function() {
+					$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+					});
+				});
+				});
+				</script>
+			
+			<div id="main">
+				<button class="openbtn" onclick="openNav()">☰ Menu</button> 
+				 
+			</div>
+
+				<script>
+				function openNav() {
+				document.getElementById("mySidebar").style.width = "250px";
+				document.getElementById("main").style.marginLeft = "250px";
+				}
+
+				function closeNav() {
+				document.getElementById("mySidebar").style.width = "0";
+				document.getElementById("main").style.marginLeft= "0";
+				}
+				</script>
+			</div>
+			<div class="heading">Transfer Ledger</div>
+			<div class="wrap-table100">
+				<div class="table100 ver1">
+					
+					
+					<div class="wrap-table100-nextcols js-pscroll">
+						<div class="table100-nextcols">
+							<table id="table">
+								<thead>
+									<tr class="row100">
+										<th class="cell100 column2">From Scheme</th>
+										<th class="cell100 column2">To Scheme</th>
+										
+										<th class="cell100 column3">Material</th>
+										<th class="cell100 column4">Quantity</th>
+										<th class="cell100 column6">Author</th>
+                                        <th class="cell100 column7">Date and Time</th>
+									</tr>
+								</thead>
+								<tbody id="myTable">
+									{% for transfer in transferdata %}
+									
+									<tr class="row100 body">
+										<td class="cell100 column2">{{transfer.FromScheme}}</td>
+										<td class="cell100 column2">{{transfer.ToScheme}}</td>
+								
+										
+										<td class="cell100 column3">{{transfer.Material}}</td>
+										<td class="cell100 column4">{{transfer.Quantity}}</td>
+										<td class="cell100 column6">{{transfer.Author}}</td>
+                                        <td class="cell100 column7">{{transfer.DateTime.strftime("%d/%m/%Y, %H:%M:%S")}}</td>
+
+									</tr>
+									
+									{% endfor %}	
+								</tbody>
+							</table>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<button class= "openbtn"onclick="exportToExcel('table')">Download table</button>
+		</div>
+	</div>
+
+
+<!--===============================================================================================-->	
+	<script src="{{ url_for('static',filename='stock/vendor/jquery/jquery-3.2.1.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='stock/vendor/bootstrap/js/popper.js')}}"></script>
+	<script src="{{ url_for('static',filename='stock/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='stock/vendor/select2/select2.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='stock/vendor/perfect-scrollbar/perfect-scrollbar.min.js')}}"></script>
+	<script>
+		$('.js-pscroll').each(function(){
+			var ps = new PerfectScrollbar(this);
+
+			$(window).on('resize', function(){
+				ps.update();
+			})
+
+			$(this).on('ps-x-reach-start', function(){
+				$(this).parent().find('.table100-firstcol').removeClass('shadow-table100-firstcol');
+			});
+
+			$(this).on('ps-scroll-x', function(){
+				$(this).parent().find('.table100-firstcol').addClass('shadow-table100-firstcol');
+			});
+
+		});
+	</script>
+	<script type="text/javascript">
+function exportToExcel(tableID, filename = 'Transfer-ledger'){
+    var downloadurl;
+    var dataFileType = 'application/vnd.ms-excel';
+    var tableSelect = document.getElementById(tableID);
+    var tableHTMLData = tableSelect.outerHTML.replace(/ /g, '%20');
+    
+    // Specify file name
+    filename = filename?filename+'.xls':'export_excel_data.xls';
+    
+    // Create download link element
+    downloadurl = document.createElement("a");
+    
+    document.body.appendChild(downloadurl);
+    
+    if(navigator.msSaveOrOpenBlob){
+        var blob = new Blob(['\ufeff', tableHTMLData], {
+            type: dataFileType
+        });
+        navigator.msSaveOrOpenBlob( blob, filename);
+    }else{
+        // Create a link to the file
+        downloadurl.href = 'data:' + dataFileType + ', ' + tableHTMLData;
+    
+        // Setting the file name
+        downloadurl.download = filename;
+        
+        //triggering the function
+        downloadurl.click();
+    }
+}
+ 
+</script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='stock/js/main.js')}}"></script>
+
+</body>
+</html>

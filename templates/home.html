@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Home</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="{{ url_for('static',filename='home/images/icons/log.png')}}"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='home/vendor/bootstrap/css/bootstrap.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='home/fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='home/fonts/Linearicons-Free-v1.0.0/icon-font.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='home/vendor/animate/animate.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='home/vendor/css-hamburgers/hamburgers.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='home/vendor/animsition/css/animsition.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='home/vendor/select2/select2.min.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='home/vendor/daterangepicker/daterangepicker.css')}}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='home/css/util.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='home/css/main.css')}}">
+<!--===============================================================================================-->
+</head>
+<body>
+	<div class="container-contact100">
+		{%if state== 'transfer'%}
+		<div class="alert alert-success alert-dismissible fade show" role="alert">
+			<strong>Success !! </strong> Material was successfully tranfered.
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		{%endif%}
+		{%if state== 'restock'%}
+		<div class="alert alert-success alert-dismissible fade show" role="alert">
+			<strong>Success !! </strong> Material was successfully restocked into inventory.
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		{%endif%}
+		{%if state== 'return'%}
+		<div class="alert alert-success alert-dismissible fade show" role="alert">
+			<strong>Success !! </strong> Material was successfully returned into inventory.
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		{%endif%}
+		{%if state== 'log'%}
+		<div class="alert alert-success alert-dismissible fade show" role="alert">
+			<strong>Success !! </strong> Material was successfully logged into ledger.
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		{%endif%}
+		{%if state== 'edit'%}
+		<div class="alert alert-success alert-dismissible fade show" role="alert">
+			<strong>Success !! </strong>Log ledger was edited successfully.
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		{%endif%}
+		<div class="wrap-menu">		
+			<div id="mySidebar" class="sidebar">
+				<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">x</a>
+				<div class="nav-item dropdown bg-white font-size-50">
+					<a href="/home">Home</a>
+					{% if accessid == "Admin" or accessid=="SuperAdmin" or accessid=="User"%}
+					<a class="nav-link dropdown-toggle " data-toggle="dropdown" href="#">Stock Management</a>
+					<div class="dropdown-menu bg-white dropright">
+						<h6 class="dropdown-header">Stock Management</h6>
+						<a class="dropdown-item" href="/restock">Restock </a>
+						<a class="dropdown-item" href="/logs">Log Stock</a>
+						<a class="dropdown-item" href="/transfer">Transfer Stock</a>
+						<a class="dropdown-item" href="/returns">Return Stock</a>	
+					</div>
+						
+				</div>
+				{%endif%}
+				{% if accessid== "Guest"%}
+				<a  href="/view_logs">Log Ledger</a>
+				{% endif %}
+				{% if accessid == "Admin" or accessid=="SuperAdmin" or accessid=="User"%}
+				<div class="nav-item dropdown bg-white font-size-50">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Ledger Management</a>
+					<div class="dropdown-menu bg-white">
+						<h6 class="dropdown-header">Ledger Management</h6>
+						<a class="dropdown-item" href="/view_restock">Restock Ledger</a>
+						<a class="dropdown-item" href="/view_logs">Log Ledger</a>
+						<a class="dropdown-item" href="/view_transfer">Transfer Ledger</a>
+						<a class="dropdown-item" href="/view_return">Return Ledger</a>
+					</div>	
+				{%endif%}
+				{% if accessid == "Admin" or accessid=="SuperAdmin"%}
+				<div class="nav-item dropdown bg-white ">
+					<a class="nav-link dropdown-toggle " data-toggle="dropdown" href="#">User Management</a>
+					<div class="dropdown-menu bg-white">
+						<h6 class="dropdown-header">User Management</h6>
+						<a class="dropdown-item h6 " href="/register">Add User</a>
+						<a class="dropdown-item " href="/delete">Remove User</a>
+					</div>
+				</div>
+				{% endif %}
+				{% if accessid == "Admin" or accessid=="SuperAdmin" or accessid=="User"%}
+				<div class="nav-item dropdown bg-white font-size-50">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Settings</a>
+					<div class="dropdown-menu bg-white">
+						<h6 class="dropdown-header">Settings</h6>
+						{%if accessid == "Admin" or accessid== "SuperAdmin"%}
+						<a class="dropdown-item" href="/edit">Edit Log Ledger</a>
+						{%endif%}
+						<a class="dropdown-item" href="/passwd_update">Change Password </a>
+					</div>	
+				</div>
+				{%endif%}
+				<a href="/logout">Logout</a>
+			</div>
+		</div>
+         <div id="main">
+         <button class="openbtn" onclick="openNav()">☰ Menu</button>  
+         </div>
+         <script>
+         function openNav() {
+         document.getElementById("mySidebar").style.width = "250px";
+         document.getElementById("main").style.marginLeft = "250px";
+         }
+
+         function closeNav() {
+         document.getElementById("mySidebar").style.width = "0";
+         document.getElementById("main").style.marginLeft= "0";
+         }
+         </script>
+		</div>
+      <span class="heading">Home</span>
+      <div class="super">
+         <div class="card" style="margin-right: 30px;">
+         <span class="svg">
+            <img src="static/home/cement.svg" width="150" height="150"/></span>
+            <div class="card-details">
+               <a class="name" href="view_cement">Cement</a>
+               <div class="card-about">
+                  <div class="item">
+                    <div class="label">Total Cement: </div>
+					<div class="value">{{cement}} <tb><span class="nam">in bags</span></div>
+                  </div>                  
+             </div> 
+            </div>
+         </div>
+         
+         <div class="card"  style="margin-right: 30px;">
+         <span class="svg">
+            <img src="static/home/steel.svg" width="140" height="140"  /></span>
+            <div class="card-details">
+               <a class="name" href="view_steel" >Steel</a>
+               <div class="card-about">
+					<div class="item">
+                    <div class="label">Total Steel: </div>
+					<div class="value">{{steel}} <tb><span class="nam">in Kgs</span></div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="card"  style="margin-right: 30px;">
+         <span class="svg">
+            <img src="static/home/bitumen.svg" width="150" height="150"/></span>
+            <div class="card-details">
+               <a class="name" href="view_bitumen">Bitumen / Emulsion</a>
+               <div class="card-about">
+                  <div class="item">
+                    <div class="label">Total Bitumen: </div>
+					<div class="value">{{bitumen}} <tb><span class="nam">in barrels</span></div>
+                  </div>
+				  <div class="item">
+                    <div class="label">Total Emulsion: </div>
+					<div class="value">{{emulsion}} <tb><span class="nam">in barrels</span></div>
+                  </div>
+               </div>
+            </div>  
+         </div>
+         <div class="card"  style="margin-right: 30px;">
+           <span class="svg">
+            <img src="static/home/door.svg" width="150" height="150"/></span>
+           
+            <div class="card-details">
+               <a class="name" href="view_other">Others</a>
+               <div class="card-about">
+                  <div class="item">
+                    <div class="label">Total Other Items: </div>
+					<div class="value">{{other}} <tb><span class="nam">in Units</span></div>
+                  </div>
+               </div>
+            </div>  
+         </div>
+   </div>
+</div>
+
+
+	
+
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='home/vendor/jquery/jquery-3.2.1.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='home/vendor/animsition/js/animsition.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='home/vendor/bootstrap/js/popper.js')}}"></script>
+	<script src="{{ url_for('static',filename='home/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='home/vendor/select2/select2.min.js')}}"></script>
+	<script>
+		$(".selection-2").select2({
+			minimumResultsForSearch: 30,
+			dropdownParent: $('#dropDownSelect1')
+		});
+	</script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='home/vendor/daterangepicker/moment.min.js')}}"></script>
+	<script src="{{ url_for('static',filename='home/vendor/daterangepicker/daterangepicker.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='home/vendor/countdowntime/countdowntime.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static',filename='home/js/main.js')}}"></script>
+
+
+
+</body>
+</html>
