@@ -2494,15 +2494,17 @@ def register():
             password= request.form['password']
             block_name= request.form['block_name']
             access_type= request.form['access_type']
-            if username not in logins_data.Username:
+            
+            user =logins_data.query.filter_by(Username=username).first()
+            if user:
+                return render_template('register.html',error='user')
+            else: 
                 new_login=logins_data( Username= username, Password= password, BlockName= block_name, AccessType= access_type , DateTime= datetime.utcnow())
 
                 db.session.add(new_login)
                 db.session.commit()
                 return redirect('/home')
-            else: 
-                return render_template('register.html',error='user')          
-                
+                         
         else:
             return render_template('register.html', accessid=accessid)
     else:
