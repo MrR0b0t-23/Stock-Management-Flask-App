@@ -29,6 +29,14 @@
 </head>
 <body>
 	<div class="container-contact100">
+		{%if error== 'user'%}
+		<div class="alert alert-Warning alert-dismissible fade show" role="alert">
+			<strong>Warning !! </strong>  Username was not available! Try with other username.
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		{%endif%}
 		<div class=" wrap-menu">		
 			<div id="mySidebar" class="sidebar">
 				<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">x</a>
