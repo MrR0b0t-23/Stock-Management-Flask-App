@@ -629,7 +629,7 @@ def restock():
                         except:
                             return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= steel_data(BlockName= blockname, Scheme=scheme, Steel_8mm= quantity,DateTime=datetime.utcnow())
+                    new_stock= steel_data(BlockName= blockname, Scheme=scheme, Steel_8mm= quantity, Steel_10mm= 0, Steel_12mm= 0, Steel_16mm= 0, Steel_20mm= 0,DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -648,7 +648,7 @@ def restock():
                         except:
                             return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= steel_data(BlockName= blockname, Scheme=scheme, Steel_10mm= quantity, DateTime=datetime.utcnow())
+                    new_stock= steel_data(BlockName= blockname, Scheme=scheme, Steel_10mm= quantity, Steel_8mm= 0, Steel_12mm= 0, Steel_16mm= 0, Steel_20mm= 0, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -667,7 +667,7 @@ def restock():
                         except:
                             return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= steel_data(BlockName= blockname, Scheme=scheme, Steel_12mm= quantity, DateTime=datetime.utcnow())
+                    new_stock= steel_data(BlockName= blockname, Scheme=scheme, Steel_8mm= 0, Steel_10mm= 0, Steel_12mm= quantity, Steel_16mm= 0, Steel_20mm= 0, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()
@@ -686,7 +686,7 @@ def restock():
                         except:
                             return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= steel_data(BlockName= blockname, Scheme=scheme, Steel_16mm= quantity, DateTime=datetime.utcnow())
+                    new_stock= steel_data(BlockName= blockname, Scheme=scheme, Steel_8mm= 0, Steel_10mm= 0, Steel_12mm= 0, Steel_16mm= quantity, Steel_20mm= 0, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -705,7 +705,7 @@ def restock():
                         except:
                             return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= steel_data(BlockName= blockname, Scheme=scheme, Steel_20mm= quantity, DateTime=datetime.utcnow())
+                    new_stock= steel_data(BlockName= blockname, Scheme=scheme, Steel_8mm= 0, Steel_10mm= 0, Steel_12mm= 0, Steel_16mm= 0, Steel_20mm= quantity, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -724,7 +724,7 @@ def restock():
                         except:
                             return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= bitumen_data(BlockName= blockname, Scheme=scheme, Bitumen= quantity, DateTime=datetime.utcnow())
+                    new_stock= bitumen_data(BlockName= blockname, Scheme=scheme, Bitumen= quantity,Emulsion= 0, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -743,7 +743,7 @@ def restock():
                         except:
                             return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= bitumen_data(BlockName= blockname, Scheme=scheme, Emulsion= quantity, DateTime=datetime.utcnow())
+                    new_stock= bitumen_data(BlockName= blockname, Scheme=scheme,Bitumen=0, Emulsion= quantity, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -762,7 +762,7 @@ def restock():
                         except:
                             return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= other_data(BlockName= blockname, Scheme=scheme, Window_1 = quantity, DateTime=datetime.utcnow())
+                    new_stock= other_data(BlockName= blockname, Scheme=scheme, Window_1 = quantity, Window_2=0, Door=0, Toilet_Door=0, LogoTiles=0, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -781,7 +781,7 @@ def restock():
                         except:
                            return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= other_data(BlockName= blockname, Scheme=scheme, Window_2 = quantity, DateTime=datetime.utcnow())
+                    new_stock= other_data(BlockName= blockname, Scheme=scheme,Window_1 = 0, Door=0, Toilet_Door=0, LogoTiles=0, Window_2 = quantity, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -800,7 +800,7 @@ def restock():
                         except:
                             return render_template('restock.html',error='update_error', accessid=accessid) 
                 else:
-                    new_stock= other_data(BlockName= blockname, Scheme=scheme, Door= quantity, DateTime=datetime.utcnow())
+                    new_stock= other_data(BlockName= blockname, Scheme=scheme,Window_1 = 0, Window_2=0, Toilet_Door=0, LogoTiles=0, Door= quantity, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -819,7 +819,7 @@ def restock():
                         except:
                            return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= other_data(BlockName= blockname, Scheme=scheme, Toilet_Door= quantity, DateTime=datetime.utcnow())
+                    new_stock= other_data(BlockName= blockname, Scheme=scheme,Window_1 = 0, Window_2=0, Door=0, LogoTiles=0, Toilet_Door= quantity, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
@@ -837,7 +837,7 @@ def restock():
                         except:
                            return render_template('restock.html',error='update_error', accessid=accessid)  
                 else:
-                    new_stock= other_data(BlockName= blockname, Scheme=scheme, LogoTiles= quantity, DateTime=datetime.utcnow())
+                    new_stock= other_data(BlockName= blockname, Scheme=scheme,Window_1 = 0, Window_2=0, Door=0, Toilet_Door=0,LogoTiles= quantity, DateTime=datetime.utcnow())
                     try:
                         db.session.add(new_stock)
                         db.session.commit()                        
