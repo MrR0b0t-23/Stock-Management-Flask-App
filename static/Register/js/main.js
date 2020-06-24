@@ -23,6 +23,8 @@
     var username = $('.validate-input input[name="username"]');
     var passwd = $('.validate-input input[name="Password"]');
     var block = $('.validate-input input[name="block_name"]');
+    var u_passwd = $('.validate-input input[name="password"]');
+    var o_passwd = $('.validate-input input[name="new_password"]');
 
 
 
@@ -42,6 +44,14 @@
        
         if($(passwd).val().trim() == ''){
             showValidate(passwd);
+            check=false;
+        }
+        if($(u_passwd).val().trim() == ''){
+            showValidate(u_passwd);
+            check=false;
+        }
+        if($(o_passwd).val().trim() == ''){
+            showValidate(o_passwd);
             check=false;
         }
 
