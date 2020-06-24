@@ -1361,7 +1361,7 @@ def transfer():
                     else:
                         if (int(fromdata.Steel_8mm)-int( quantity)) >=0:
                             fromdata.Steel_8mm= int(fromdata.Steel_8mm) - int(quantity)
-                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme, Steel_8mm= quantity, DateTime=datetime.utcnow())
+                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme,Steel_10mm=0,Steel_12mm=0, Steel_20mm= 0, Steel_16mm= 0, Steel_8mm= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1391,7 +1391,7 @@ def transfer():
                     else:
                         if (int(fromdata.Steel_10mm)-int( quantity)) >=0:
                             fromdata.Steel_10mm= int(fromdata.Steel_10mm) - int(quantity)
-                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme, Steel_10mm= quantity, DateTime=datetime.utcnow())
+                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme,Steel_8mm=0,Steel_12mm=0, Steel_20mm= 0, Steel_16mm= 0, Steel_10mm= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1421,7 +1421,7 @@ def transfer():
                     else:
                         if (int(fromdata.Steel_12mm)-int( quantity)) >=0:
                             fromdata.Steel_12mm= int(fromdata.Steel_12mm) - int(quantity)
-                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme, Steel_12mm= quantity, DateTime=datetime.utcnow())
+                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme,Steel_8mm=0,Steel_10mm=0, Steel_20mm= 0, Steel_16mm= 0, Steel_12mm= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1451,7 +1451,7 @@ def transfer():
                     else:
                         if (int(fromdata.Steel_12mm)-int( quantity)) >=0:
                             fromdata.Steel_12mm= int(fromdata.Steel_12mm) - int(quantity)
-                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme, Steel_12mm= quantity, DateTime=datetime.utcnow())
+                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme,Steel_8mm=0,Steel_10mm=0, Steel_20mm= 0, Steel_16mm= 0, Steel_12mm= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1481,7 +1481,7 @@ def transfer():
                     else:
                         if (int(fromdata.Steel_16mm)-int( quantity)) >=0:
                             fromdata.Steel_16mm= int(fromdata.Steel_16mm) - int(quantity)
-                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme, Steel_16mm= quantity, DateTime=datetime.utcnow())
+                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme,Steel_8mm=0,Steel_10mm=0,Steel_12mm=0, Steel_20mm= 0, Steel_16mm= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1511,7 +1511,7 @@ def transfer():
                     else:
                         if (int(fromdata.Steel_20mm)-int( quantity)) >=0:
                             fromdata.Steel_20mm= int(fromdata.Steel_20mm) - int(quantity)
-                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme, Steel_20mm= quantity, DateTime=datetime.utcnow())
+                            to_data_update= steel_data(BlockName= blockname, Scheme=toscheme,Steel_8mm=0,Steel_10mm=0,Steel_12mm=0,Steel_16mm=0, Steel_20mm= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1541,7 +1541,7 @@ def transfer():
                     else:
                         if (int(fromdata.Bitumen)-int( quantity)) >=0:
                             fromdata.Bitumen= int(fromdata.Bitumen) - int(quantity)
-                            to_data_update= bitumen_data(BlockName= blockname, Scheme=toscheme, Bitumen= quantity, DateTime=datetime.utcnow())
+                            to_data_update= bitumen_data(BlockName= blockname, Scheme=toscheme, Bitumen= quantity,Emulsion=0, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1571,7 +1571,7 @@ def transfer():
                     else:
                         if (int(fromdata.Emulsion)-int( quantity)) >=0:
                             fromdata.Emulsion= int(fromdata.Emulsion) - int(quantity)
-                            to_data_update= bitumen_data(BlockName= blockname, Scheme=toscheme, Emulsion= quantity, DateTime=datetime.utcnow())
+                            to_data_update= bitumen_data(BlockName= blockname, Scheme=toscheme,Bitumen=0, Emulsion= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1601,7 +1601,7 @@ def transfer():
                     else:
                         if (int(fromdata.Window_1)-int( quantity)) >=0:
                             fromdata.Window_1= int(fromdata.Window_1) - int(quantity)
-                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme, Window_1= quantity, DateTime=datetime.utcnow())
+                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme, Window_2=0, Door=0, Toilet_Door=0, LogoTiles=0, Window_1= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                              
@@ -1631,7 +1631,7 @@ def transfer():
                     else:
                         if (int(fromdata.Window_2)-int( quantity)) >=0:
                             fromdata.Window_2= int(fromdata.Window_2) - int(quantity)
-                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme, Window_2= quantity, DateTime=datetime.utcnow())
+                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme,,Window_1=0, Door=0, Toilet_Door=0, LogoTiles=0 ,Window_2= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1661,7 +1661,7 @@ def transfer():
                     else:
                         if (int(fromdata.Door)-int( quantity)) >=0:
                             fromdata.Door= int(fromdata.Door) - int(quantity)
-                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme, Door= quantity, DateTime=datetime.utcnow())
+                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme,Window_1=0, Window_2=0, Toilet_Door=0, LogoTiles= 0, Door= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1691,7 +1691,7 @@ def transfer():
                     else:
                         if (int(fromdata.Toilet_Door)-int( quantity)) >=0:
                             fromdata.Toilet_Door= int(fromdata.Toilet_Door) - int(quantity)
-                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme, Toilet_Door= quantity, DateTime=datetime.utcnow())
+                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme,Window_1=0, Window_2=0, Door=0, LogoTiles= 0,Toilet_Door= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
@@ -1720,7 +1720,7 @@ def transfer():
                     else:
                         if (int(fromdata.LogoTiles)-int( quantity)) >=0:
                             fromdata.LogoTiles= int(fromdata.LogoTiles) - int(quantity)
-                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme, LogoTiles= quantity, DateTime=datetime.utcnow())
+                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme, Window_1=0, Window_2=0, Door=0, Toilet_Door=0, LogoTiles= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
