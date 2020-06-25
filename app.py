@@ -1631,7 +1631,7 @@ def transfer():
                     else:
                         if (int(fromdata.Window_2)-int( quantity)) >=0:
                             fromdata.Window_2= int(fromdata.Window_2) - int(quantity)
-                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme,,Window_1=0, Door=0, Toilet_Door=0, LogoTiles=0 ,Window_2= quantity, DateTime=datetime.utcnow())
+                            to_data_update= other_data(BlockName= blockname, Scheme=toscheme,Window_1=0, Door=0, Toilet_Door=0, LogoTiles=0 ,Window_2= quantity, DateTime=datetime.utcnow())
                             try:
                                 db.session.add(to_data_update)
                                 db.session.commit()                                
