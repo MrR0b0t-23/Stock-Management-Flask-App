@@ -2467,7 +2467,7 @@ def login():
                 result= 'none'
                 return render_template('login.html', result=result)
         elif username== 'Admin':
-            if password== 'd!cDC:YKnr=b956':
+            if password== '******':
                 resp=make_response(redirect('/home'))
                 resp.set_cookie('UserId',username)
                 resp.set_cookie('BlockId','Erode') 
