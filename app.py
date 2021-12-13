@@ -6,7 +6,6 @@ from sqlalchemy.sql import text
 app= Flask(__name__)
 
 ENV = 'pro'
-    
 if ENV == 'dev':
     app.debug= True
     app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:12345@localhost/Stock-API'
